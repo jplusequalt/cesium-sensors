@@ -267,7 +267,7 @@ export function RectangularPyramidSensorVolume(this: any, options?) {
 
   this._uniforms = {
     u_type: function () {
-      return 0; //面
+      return 0;
     },
     u_xHalfAngle: function () {
       return self.xHalfAngle;
@@ -560,7 +560,7 @@ function computeSectorPositions(
       })
       .reverse()
   );
-  // The zox face rotates yHalfAngle counterclockwise along the x-axis
+  // The zx face rotates yHalfAngle counterclockwise along the x-axis
   const m4 = Matrix3.fromRotationX(yHalfAngle, matrix3Scratch);
   positions.push(
     zx.map(function (p) {
