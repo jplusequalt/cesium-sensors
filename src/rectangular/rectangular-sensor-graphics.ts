@@ -14,7 +14,7 @@ let defineProperties = Object.defineProperties;
  * @alias RectangularSensorGraphics
  * @constructor
  */
-export function RectangularSensorGraphics(this: any, options: any) {  
+export function RectangularSensorGraphics(this: any, options: any) {
   this._show = undefined;
   this._radius = undefined;
   this._xHalfAngle = undefined;
@@ -64,8 +64,10 @@ defineProperties(RectangularSensorGraphics.prototype, {
   intersectionColor: createPropertyDescriptor('intersectionColor'),
   intersectionWidth: createPropertyDescriptor('intersectionWidth'),
   showThroughEllipsoid: createPropertyDescriptor('showThroughEllipsoid'),
-  lateralSurfaceMaterial: createMaterialPropertyDescriptor("lateralSurfaceMaterial"),
-  domeSurfaceMaterial: createMaterialPropertyDescriptor("domeSurfaceMaterial"),
+  lateralSurfaceMaterial: createMaterialPropertyDescriptor(
+    'lateralSurfaceMaterial'
+  ),
+  domeSurfaceMaterial: createMaterialPropertyDescriptor('domeSurfaceMaterial'),
   gaze: createPropertyDescriptor('gaze'),
   showScanPlane: createPropertyDescriptor('showScanPlane'),
   scanPlaneColor: createPropertyDescriptor('scanPlaneColor'),
@@ -120,8 +122,7 @@ RectangularSensorGraphics.prototype.merge = function (source: any) {
   if (!defined(source)) {
     throw new DeveloperError('source is required.');
   }
-  console.log(this);
-  
+
   this.show = defaultValue(this.show, source.show);
   this.radius = defaultValue(this.radius, source.radius);
   this.xHalfAngle = defaultValue(this.xHalfAngle, source.xHalfAngle);

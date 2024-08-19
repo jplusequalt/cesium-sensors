@@ -36,7 +36,11 @@ let orientationScratch = new Quaternion();
  * @param {Scene} scene The scene the primitives will be rendered in.
  * @param {EntityCollection} entityCollection The entityCollection to visualize.
  */
-export var RectangularSensorVisualizer = function (this: any, scene: Scene, entityCollection: EntityCollection) {
+export var RectangularSensorVisualizer = function (
+  this: any,
+  scene: Scene,
+  entityCollection: EntityCollection
+) {
   // >>includeStart('debug', pragmas.debug);
   if (!defined(scene)) {
     throw new DeveloperError('scene is required.');

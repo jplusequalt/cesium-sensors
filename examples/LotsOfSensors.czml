@@ -318,20 +318,13 @@
       "lateralSurfaceMaterial":{
         "solidColor":{
           "color":{
-            "rgba": [123, 122, 199,165]
+            "rgba": [255, 0, 0, 200]
           }
         }
       },
       "xHalfAngle": 0.6,
       "yHalfAngle": 1.0,
       "showThroughEllipsoid": false,
-      "domeSurfaceMaterial":{
-        "solidColor":{
-          "color":{
-            "rgba": [255,123,22,51]
-          }
-        }
-      },
       "directions":{
         "unitSpherical":[
           0.7853981633974483,0.19619792218463297,2.356194490192345,0.19619792218463297,-2.356194490192345,0.19619792218463297,-0.7853981633974483,0.19619792218463297

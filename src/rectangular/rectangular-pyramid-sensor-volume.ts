@@ -1084,24 +1084,30 @@ function createCommand(
   translucent: boolean,
   pass: Pass,
   isLine: boolean
-) {  
+) {
   if (translucent && backCommand) {
     backCommand.vertexArray = va;
     backCommand.renderState = backFaceRS;
     backCommand.shaderProgram = sp;
-    backCommand.uniformMap = combine(uniforms, primitive._lateralSurfaceMaterial._uniforms);
+    backCommand.uniformMap = combine(
+      uniforms,
+      primitive._lateralSurfaceMaterial._uniforms
+    );
     backCommand.uniformMap.u_normalDirection = function () {
       return -1.0;
     };
     backCommand.pass = pass;
     backCommand.modelMatrix = modelMatrix;
-    primitive._colorCommands.push(backCommand);    
+    primitive._colorCommands.push(backCommand);
   }
 
   frontCommand.vertexArray = va;
   frontCommand.renderState = frontFaceRS;
   frontCommand.shaderProgram = sp;
-  frontCommand.uniformMap = combine(uniforms, primitive._lateralSurfaceMaterial._uniforms);
+  frontCommand.uniformMap = combine(
+    uniforms,
+    primitive._lateralSurfaceMaterial._uniforms
+  );
   if (isLine) {
     frontCommand.uniformMap.u_type = function () {
       return 1;
@@ -1115,7 +1121,7 @@ function createCommand(
 function createCommands(primitive: any, translucent: boolean) {
   primitive._colorCommands.length = 0;
 
-  const pass = translucent ? Pass.TRANSLUCENT : Pass.OPAQUE;  
+  const pass = translucent ? Pass.TRANSLUCENT : Pass.OPAQUE;
 
   if (primitive.showLateralSurfaces) {
     createCommand(

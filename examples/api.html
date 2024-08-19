@@ -80,7 +80,7 @@
         //         }),
         baseLayerPicker: false,
         geocoder: false,
-        shouldAnimate: true
+        shouldAnimate: true,
       });
 
       var longitude = Cesium.Math.toRadians(-90.0);
@@ -133,20 +133,23 @@
         // sensor.rectangularSensor.showLateralSurfaces = true;
         // sensor.rectangularSensor.showThroughEllipsoid = false;
 
-        console.log(viewer.entities.add({
-          position: Cesium.Cartesian3.fromDegrees(-86, 34, 0),
-          rectangularSensor: new CesiumSensorVolumes.RectangularSensorGraphics({
-            radius: 1000000,
-            xHalfAngle: Cesium.Math.toRadians(45),
-            yHalfAngle: Cesium.Math.toRadians(45),
-            lineColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
-            material: new Cesium.Color(0.0, 1.0, 1.0, 0.4),
-            showScanPlane: true,
-            scanPlaneColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
-            scanPlaneMode: 'vertical',
-            scanPlaneRate: 3,
-          }),
-        }));
+        console.log(
+          viewer.entities.add({
+            position: Cesium.Cartesian3.fromDegrees(-86, 34, 0),
+            rectangularSensor:
+              new CesiumSensorVolumes.RectangularSensorGraphics({
+                radius: 1000000,
+                xHalfAngle: Cesium.Math.toRadians(45),
+                yHalfAngle: Cesium.Math.toRadians(45),
+                lineColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
+                lateralSurfaceMaterial: new Cesium.Color(0.0, 1.0, 1.0, 0.4),
+                showScanPlane: true,
+                scanPlaneColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
+                scanPlaneMode: 'vertical',
+                scanPlaneRate: 3,
+              }),
+          })
+        );
       }
 
       function addCustomSensor() {

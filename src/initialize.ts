@@ -5,7 +5,7 @@ import {
   DataSourceDisplay,
   defined,
   Spherical,
-  TimeInterval
+  TimeInterval,
 } from 'cesium';
 import { ConicSensorGraphics } from './conic/conic-sensor-graphics';
 import { ConicSensorVisualizer } from './conic/conic-sensor-visualizer';
