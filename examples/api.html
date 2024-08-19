@@ -22,7 +22,7 @@
       {
         "imports": {
           "cesium": "../node_modules/cesium/Build/CesiumUnminified/index.js",
-          "cesium-sensors-es6": "../dist/cesium-sensors-es6.esm.js"
+          "cesium-sensors": "../dist/cesium-sensors.esm.js"
         }
       }
     </script>
@@ -31,7 +31,7 @@
       src="../node_modules/cesium/Build/CesiumUnminified/index.js"
       type="module"
     ></script>
-    <script type="module" src="../dist/cesium-sensors-es6.esm.js"></script>
+    <script type="module" src="../dist/cesium-sensors.esm.js"></script>
 
     <style>
       #cesiumContainer {
@@ -68,7 +68,7 @@
     <div id="cesiumContainer"></div>
     <div id="toolbar"></div>
     <script type="module">
-      import * as CesiumSensorVolumes from 'cesium-sensors-es6';
+      import * as CesiumSensorVolumes from 'cesium-sensors';
       import * as Cesium from 'cesium';
       var viewer = new Cesium.Viewer('cesiumContainer', {
         contextOptions: {
@@ -78,12 +78,9 @@
         //     imageryProvider: Cesium.createTileMapServiceImageryProvider({
         //             url: Cesium.buildModuleUrl('../node_modules/cesium/Build/Cesium/Assets/Textures/NaturalEarthII')
         //         }),
-        imageryProvider: new Cesium.TileMapServiceImageryProvider({
-          url: Cesium.buildModuleUrl('./Assets/Textures/NaturalEarthII'),
-        }),
-
         baseLayerPicker: false,
         geocoder: false,
+        shouldAnimate: true
       });
 
       var longitude = Cesium.Math.toRadians(-90.0);
@@ -120,19 +117,36 @@
 
       function addRectangularSensor() {
         viewer.scene.primitives.removeAll();
-        var rectangularPyramidSensor =
-          new CesiumSensorVolumes.RectangularPyramidSensorVolume();
+        const entities = new Cesium.EntityCollection();
+        const sensor = entities.getOrCreateEntity('sensors');
+        sensor.addProperty('rectangularSensor');
 
-        rectangularPyramidSensor.modelMatrix = getModelMatrix();
-        rectangularPyramidSensor.radius = 20000000.0;
-        rectangularPyramidSensor.xHalfAngle = Cesium.Math.toRadians(40.0);
-        rectangularPyramidSensor.yHalfAngle = Cesium.Math.toRadians(20.0);
+        // sensor.orientation = Cesium.Quaternion.fromHeadingPitchRoll(Cesium.HeadingPitchRoll.fromDegrees(0, 0, 90));
+        // sensor.position = Cesium.Cartesian3.fromDegrees(-86, 34, 0);
 
-        rectangularPyramidSensor.lateralSurfaceMaterial =
-          Cesium.Material.fromType('Color');
-        rectangularPyramidSensor.lateralSurfaceMaterial.uniforms.color =
-          new Cesium.Color(0.0, 1.0, 1.0, 0.5);
-        viewer.scene.primitives.add(rectangularPyramidSensor);
+        // sensor.rectangularSensor = new CesiumSensorVolumes.RectangularSensorGraphics();
+        // sensor.rectangularSensor.xHalfAngle = Math.PI / 4;
+        // sensor.rectangularSensor.yHalfAngle = Math.PI / 4;
+        // sensor.rectangularSensor.radius = 1000000;
+        // sensor.rectangularSensor.show = true;
+        // sensor.rectangularSensor.showDomeSurfaces = true;
+        // sensor.rectangularSensor.showLateralSurfaces = true;
+        // sensor.rectangularSensor.showThroughEllipsoid = false;
+
+        console.log(viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(-86, 34, 0),
+          rectangularSensor: new CesiumSensorVolumes.RectangularSensorGraphics({
+            radius: 1000000,
+            xHalfAngle: Cesium.Math.toRadians(45),
+            yHalfAngle: Cesium.Math.toRadians(45),
+            lineColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
+            material: new Cesium.Color(0.0, 1.0, 1.0, 0.4),
+            showScanPlane: true,
+            scanPlaneColor: new Cesium.Color(0.0, 1.0, 1.0, 1.0),
+            scanPlaneMode: 'vertical',
+            scanPlaneRate: 3,
+          }),
+        }));
       }
 
       function addCustomSensor() {
@@ -164,7 +178,7 @@
       addToolbarButton('Rectangular', addRectangularSensor);
       addToolbarButton('Custom', addCustomSensor);
 
-      addCustomSensor();
+      addRectangularSensor();
     </script>
   </body>
 </html>

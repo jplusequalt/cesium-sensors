@@ -45,7 +45,22 @@ declare module 'cesium' {
   export class BufferUsage {
     static STATIC_DRAW;
   }
-  export class DrawCommand {}
+
+  export type DrawCommandOptions = {
+    owner: any;
+    primitiveType: PrimitiveType;
+    boundingVolume: BoundingSphere;
+  };
+  export class DrawCommand {
+    vertexArray: VertexArray;
+    pass: Pass;
+    uniformMap: any;
+    modelMatrix: Matrix4;
+    renderState: RenderState;
+    shaderProgram: ShaderProgram;
+
+    constructor(options: DrawCommandOptions);
+  }
   export class Pass {
     static ENVIRONMENT;
     static COMPUTE;
@@ -70,5 +85,14 @@ declare module 'cesium' {
   }
   export class VertexArray {
     constructor(options: any);
+    static fromGeometry(options: any);
   }
+  export class FrameState {
+    context;
+    mode: SceneMode;
+    commandList: DrawCommand[];
+    time: JulianDate;
+    passes: any;
+  }
+  export class Context {}
 }

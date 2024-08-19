@@ -1,20 +1,14 @@
-import {
-  createMaterialPropertyDescriptor,
-  createPropertyDescriptor,
-  defaultValue,
-  defined,
-  DeveloperError,
-  Event,
-} from 'cesium';
+import Cesium from 'cesium';
 
-let defineProperties = Object.defineProperties;
-/**
- * An optionally time-dynamic pyramid.
- *
- * @alias RectangularSensorGraphics
- * @constructor
- */
-export function RectangularSensorGraphics(this: any, options: any) {  
+var defaultValue = Cesium.defaultValue;
+var defined = Cesium.defined;
+var defineProperties = Cesium.defineProperties;
+var DeveloperError = Cesium.DeveloperError;
+var Event = Cesium.Event;
+var createMaterialPropertyDescriptor = Cesium.createMaterialPropertyDescriptor;
+var createPropertyDescriptor = Cesium.createPropertyDescriptor;
+
+function RectangularSensorGraphics(options) {
   this._show = undefined;
   this._radius = undefined;
   this._xHalfAngle = undefined;
@@ -24,9 +18,6 @@ export function RectangularSensorGraphics(this: any, options: any) {
   this._showSectorSegmentLines = undefined;
   this._showLateralSurfaces = undefined;
   this._material = undefined;
-  this._lateralSurfaceMaterial = undefined;
-  this._lateralSurfaceMaterialSubscription = undefined;
-  this._domeSurfaceMaterial = undefined;
   this._showDomeSurfaces = undefined;
   this._showDomeLines = undefined;
   this._showIntersection = undefined;
@@ -39,7 +30,7 @@ export function RectangularSensorGraphics(this: any, options: any) {
   this._scanPlaneMode = undefined;
   this._scanPlaneRate = undefined;
   this._definitionChanged = new Event();
-  this.merge(defaultValue(options, {}));
+  this.merge(defaultValue(options, defaultValue.EMPTY_OBJECT));
 }
 
 defineProperties(RectangularSensorGraphics.prototype, {
@@ -57,15 +48,13 @@ defineProperties(RectangularSensorGraphics.prototype, {
   showSectorLines: createPropertyDescriptor('showSectorLines'),
   showSectorSegmentLines: createPropertyDescriptor('showSectorSegmentLines'),
   showLateralSurfaces: createPropertyDescriptor('showLateralSurfaces'),
-  //material: createMaterialPropertyDescriptor('material'),
+  material: createMaterialPropertyDescriptor('material'),
   showDomeSurfaces: createPropertyDescriptor('showDomeSurfaces'),
   showDomeLines: createPropertyDescriptor('showDomeLines '),
   showIntersection: createPropertyDescriptor('showIntersection'),
   intersectionColor: createPropertyDescriptor('intersectionColor'),
   intersectionWidth: createPropertyDescriptor('intersectionWidth'),
   showThroughEllipsoid: createPropertyDescriptor('showThroughEllipsoid'),
-  lateralSurfaceMaterial: createMaterialPropertyDescriptor("lateralSurfaceMaterial"),
-  domeSurfaceMaterial: createMaterialPropertyDescriptor("domeSurfaceMaterial"),
   gaze: createPropertyDescriptor('gaze'),
   showScanPlane: createPropertyDescriptor('showScanPlane'),
   scanPlaneColor: createPropertyDescriptor('scanPlaneColor'),
@@ -73,15 +62,9 @@ defineProperties(RectangularSensorGraphics.prototype, {
   scanPlaneRate: createPropertyDescriptor('scanPlaneRate'),
 });
 
-/**
- * Duplicates a RectangularSensorGraphics instance.
- *
- * @param {RectangularSensorGraphics} [result] The object onto which to store the result.
- * @returns {RectangularSensorGraphics} The modified result parameter or a new instance if one was not provided.
- */
-RectangularSensorGraphics.prototype.clone = function (result: any) {
+RectangularSensorGraphics.prototype.clone = function (result) {
   if (!defined(result)) {
-    result = new RectangularSensorGraphics(undefined);
+    result = new RectangularSensorGraphics();
   }
 
   result.show = this.show;
@@ -92,9 +75,7 @@ RectangularSensorGraphics.prototype.clone = function (result: any) {
   result.showSectorLines = this.showSectorLines;
   result.showSectorSegmentLines = this.showSectorSegmentLines;
   result.showLateralSurfaces = this.showLateralSurfaces;
-  //result.material = this.material;
-  result.lateralSurfaceMaterial = this.lateralSurfaceMaterial;
-  result.domeSurfaceMaterial = this.domeSurfaceMaterial;
+  result.material = this.material;
   result.showDomeSurfaces = this.showDomeSurfaces;
   result.showDomeLines = this.showDomeLines;
   result.showIntersection = this.showIntersection;
@@ -110,18 +91,11 @@ RectangularSensorGraphics.prototype.clone = function (result: any) {
   return result;
 };
 
-/**
- * Assigns each unassigned property on this object to the value
- * of the same property on the provided source object.
- *
- * @param {RectangularSensorGraphics} source The object to be merged into this object.
- */
-RectangularSensorGraphics.prototype.merge = function (source: any) {
+RectangularSensorGraphics.prototype.merge = function (source) {
   if (!defined(source)) {
     throw new DeveloperError('source is required.');
   }
-  console.log(this);
-  
+
   this.show = defaultValue(this.show, source.show);
   this.radius = defaultValue(this.radius, source.radius);
   this.xHalfAngle = defaultValue(this.xHalfAngle, source.xHalfAngle);
@@ -140,14 +114,6 @@ RectangularSensorGraphics.prototype.merge = function (source: any) {
     source.showLateralSurfaces
   );
   this.material = defaultValue(this.material, source.material);
-  this.lateralSurfaceMaterial = defaultValue(
-    this.lateralSurfaceMaterial,
-    source.lateralSurfaceMaterial
-  );
-  this.domeSurfaceMaterial = defaultValue(
-    this.domeSurfaceMaterial,
-    source.domeSurfaceMaterial
-  );
   this.showDomeSurfaces = defaultValue(
     this.showDomeSurfaces,
     source.showDomeSurfaces
@@ -178,3 +144,5 @@ RectangularSensorGraphics.prototype.merge = function (source: any) {
   this.scanPlaneMode = defaultValue(this.scanPlaneMode, source.scanPlaneMode);
   this.scanPlaneRate = defaultValue(this.scanPlaneRate, source.scanPlaneRate);
 };
+
+export { RectangularSensorGraphics };

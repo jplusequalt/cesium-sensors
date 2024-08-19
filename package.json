@@ -1,11 +1,11 @@
 {
-  "version": "1.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rulonder/cesium-sensors-es6.git"
+    "url": "https://github.com/jplusequalt/cesium-sensors.git"
   },
   "files": [
     "dist",
@@ -22,7 +22,7 @@
     "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "cesium": "^1.102.0"
+    "cesium": "^1.120.0"
   },
   "husky": {
     "hooks": {
@@ -35,11 +35,11 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "cesium-sensors-es6",
-  "author": "raulns@gmail.com",
-  "module": "dist/cesium-sensors-es6.esm.js",
+  "name": "cesium-sensors",
+  "author": "",
+  "module": "dist/cesium-sensors.esm.js",
   "devDependencies": {
-    "cesium": "1.102.0",
+    "cesium": "1.120.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^4.3.8",
     "prettier": "^3.3.1",

@@ -23,7 +23,7 @@
       {
         "imports": {
           "cesium": "../node_modules/cesium/Build/CesiumUnminified/index.js",
-          "cesium-sensors-es6": "../dist/cesium-sensors-es6.esm.js"
+          "cesium-sensors": "../dist/cesium-sensors.esm.js"
         }
       }
     </script>
@@ -32,7 +32,7 @@
       src="../node_modules/cesium/Build/CesiumUnminified/index.js"
       type="module"
     ></script>
-    <script type="module" src="../dist/cesium-sensors-es6.esm.js"></script>
+    <script type="module" src="../dist/cesium-sensors.esm.js"></script>
 
     <style>
       #cesiumContainer {
@@ -318,7 +318,7 @@
       </div>
     </div>
     <script type="module">
-      import * as CesiumSensorVolumes from 'cesium-sensors-es6';
+      import * as CesiumSensorVolumes from 'cesium-sensors';
       import * as Cesium from 'cesium';
       var scratchHPRQuaternion = new Cesium.Quaternion();
       var scratchScale = new Cesium.Cartesian3(1.0, 1.0, 1.0);

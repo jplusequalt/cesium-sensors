@@ -1,19 +1,23 @@
-import { Cartesian3 } from 'cesium';
-import { Color } from 'cesium';
-import { defined } from 'cesium';
-import { Spherical } from 'cesium';
-import { TimeInterval } from 'cesium';
-import { CzmlDataSource } from 'cesium';
-import { DataSourceDisplay } from 'cesium';
+import {
+  Cartesian3,
+  Color,
+  CzmlDataSource,
+  DataSourceDisplay,
+  defined,
+  Spherical,
+  TimeInterval
+} from 'cesium';
 import { ConicSensorGraphics } from './conic/conic-sensor-graphics';
 import { ConicSensorVisualizer } from './conic/conic-sensor-visualizer';
 import { CustomPatternSensorGraphics } from './custom/custom-pattern-sensor-graphics';
 import { CustomPatternSensorVisualizer } from './custom/custom-pattern-sensor-visualizer';
 import { RectangularSensorGraphics } from './rectangular/rectangular-sensor-graphics';
 import { RectangularSensorVisualizer } from './rectangular/rectangular-sensor-visualizer';
+// import { RectangularSensorGraphics } from "./rectangular/RectangularSensorGraphics";
+// import { RectangularSensorVisualizer } from './rectangular/RectangularSensorVisualizer';
 
-var processPacketData = CzmlDataSource.processPacketData;
-var processMaterialPacketData = CzmlDataSource.processMaterialPacketData;
+const processPacketData = CzmlDataSource.processPacketData;
+const processMaterialPacketData = CzmlDataSource.processMaterialPacketData;
 
 function processDirectionData(
   customPatternSensor: any,
@@ -22,13 +26,13 @@ function processDirectionData(
   sourceUri: any,
   entityCollection: any
 ) {
-  var i;
-  var len;
-  var values: any[] = [];
-  var unitSphericals = directions.unitSpherical;
-  var sphericals = directions.spherical;
-  var unitCartesians = directions.unitCartesian;
-  var cartesians = directions.cartesian;
+  let i;
+  let len;
+  const values: any[] = [];
+  const unitSphericals = directions.unitSpherical;
+  const sphericals = directions.spherical;
+  const unitCartesians = directions.unitCartesian;
+  const cartesians = directions.cartesian;
 
   if (defined(unitSphericals)) {
     for (i = 0, len = unitSphericals.length; i < len; i += 2) {
@@ -44,7 +48,7 @@ function processDirectionData(
     directions.array = values;
   } else if (defined(unitCartesians)) {
     for (i = 0, len = unitCartesians.length; i < len; i += 3) {
-      var tmp = Spherical.fromCartesian3(
+      const tmp = Spherical.fromCartesian3(
         new Cartesian3(
           unitCartesians[i],
           unitCartesians[i + 1],
@@ -128,24 +132,24 @@ function processCommonSensorProperties(
     sourceUri,
     entityCollection
   );
-  processMaterialPacketData(
-    sensor,
-    'lateralSurfaceMaterial',
-    sensorData.lateralSurfaceMaterial,
-    interval,
-    sourceUri,
-    entityCollection
-  );
+  // processMaterialPacketData(
+  //   Material,
+  //   'lateralSurfaceMaterial',
+  //   sensorData.lateralSurfaceMaterial,
+  //   interval,
+  //   sourceUri,
+  //   entityCollection
+  // );
 }
 
 function processConicSensor(entity, packet, entityCollection, sourceUri) {
-  var conicSensorData = packet.agi_conicSensor;
+  const conicSensorData = packet.agi_conicSensor;
   if (!defined(conicSensorData)) {
     return;
   }
 
-  var interval;
-  var intervalString = conicSensorData.interval;
+  let interval;
+  const intervalString = conicSensorData.interval;
   if (defined(intervalString)) {
     const iso8601Scratch = {
       iso8601: intervalString,
@@ -153,7 +157,7 @@ function processConicSensor(entity, packet, entityCollection, sourceUri) {
     interval = TimeInterval.fromIso8601(iso8601Scratch);
   }
 
-  var conicSensor = entity.conicSensor;
+  let conicSensor = entity.conicSensor;
   if (!defined(conicSensor)) {
     entity.addProperty('conicSensor');
     conicSensor = new ConicSensorGraphics();
@@ -211,13 +215,13 @@ function processCustomPatternSensor(
   entityCollection,
   sourceUri
 ) {
-  var customPatternSensorData = packet.agi_customPatternSensor;
+  const customPatternSensorData = packet.agi_customPatternSensor;
   if (!defined(customPatternSensorData)) {
     return;
   }
 
-  var interval;
-  var intervalString = customPatternSensorData.interval;
+  let interval;
+  const intervalString = customPatternSensorData.interval;
   if (defined(intervalString)) {
     const iso8601Scratch = {
       iso8601: intervalString,
@@ -225,7 +229,7 @@ function processCustomPatternSensor(
     interval = TimeInterval.fromIso8601(iso8601Scratch);
   }
 
-  var customPatternSensor = entity.customPatternSensor;
+  let customPatternSensor = entity.customPatternSensor;
   if (!defined(customPatternSensor)) {
     entity.addProperty('customPatternSensor');
     customPatternSensor = new CustomPatternSensorGraphics();
@@ -242,11 +246,11 @@ function processCustomPatternSensor(
 
   // The directions property is a special case value that can be an array of unitSpherical or unit Cartesians.
   // We pre-process this into Spherical instances and then process it like any other array.
-  var directions = customPatternSensorData.directions;
+  const directions = customPatternSensorData.directions;
   if (defined(directions)) {
     if (Array.isArray(directions)) {
-      var length = directions.length;
-      for (var i = 0; i < length; i++) {
+      const length = directions.length;
+      for (let i = 0; i < length; i++) {
         processDirectionData(
           customPatternSensor,
           directions[i],
@@ -268,13 +272,13 @@ function processCustomPatternSensor(
 }
 
 function processRectangularSensor(entity, packet, entityCollection, sourceUri) {
-  var rectangularSensorData = packet.agi_rectangularSensor;
+  const rectangularSensorData = packet.agi_rectangularSensor;
   if (!defined(rectangularSensorData)) {
     return;
   }
 
-  var interval;
-  var intervalString = rectangularSensorData.interval;
+  let interval;
+  const intervalString = rectangularSensorData.interval;
   if (defined(intervalString)) {
     const iso8601Scratch = {
       iso8601: intervalString,
@@ -282,10 +286,10 @@ function processRectangularSensor(entity, packet, entityCollection, sourceUri) {
     interval = TimeInterval.fromIso8601(iso8601Scratch);
   }
 
-  var rectangularSensor = entity.rectangularSensor;
+  let rectangularSensor = entity.rectangularSensor;
   if (!defined(rectangularSensor)) {
     entity.addProperty('rectangularSensor');
-    rectangularSensor = new RectangularSensorGraphics();
+    rectangularSensor = new RectangularSensorGraphics(undefined);
     entity.rectangularSensor = rectangularSensor;
   }
 
@@ -314,9 +318,51 @@ function processRectangularSensor(entity, packet, entityCollection, sourceUri) {
     sourceUri,
     entityCollection
   );
+  processPacketData(
+    Boolean,
+    rectangularSensor,
+    'showDomeSurfaces',
+    rectangularSensorData.showDomeSurfaces,
+    interval,
+    sourceUri,
+    entityCollection
+  );
+  processPacketData(
+    Boolean,
+    rectangularSensor,
+    'showThroughEllipsoid',
+    rectangularSensorData.showThroughEllipsoid,
+    interval,
+    sourceUri,
+    entityCollection
+  );
+  processMaterialPacketData(
+    rectangularSensor,
+    'material',
+    rectangularSensorData.material,
+    interval,
+    sourceUri,
+    entityCollection
+  );
+  processMaterialPacketData(
+    rectangularSensor,
+    'domeSurfaceMaterial',
+    rectangularSensorData.domeSurfaceMaterial,
+    interval,
+    sourceUri,
+    entityCollection
+  );
+  processMaterialPacketData(
+    rectangularSensor,
+    'lateralSurfaceMaterial',
+    rectangularSensorData.lateralSurfaceMaterial,
+    interval,
+    sourceUri,
+    entityCollection
+  );
 }
 
-var initialized = false;
+let initialized = false;
 export function initialize() {
   if (initialized) {
     return;
@@ -328,15 +374,15 @@ export function initialize() {
     processRectangularSensor
   );
 
-  var originalDefaultVisualizersCallback: any =
+  const originalDefaultVisualizersCallback: any =
     DataSourceDisplay.defaultVisualizersCallback;
   DataSourceDisplay.defaultVisualizersCallback = function (
     scene,
     entityCluster,
     dataSource
   ) {
-    var entities = dataSource.entities;
-    var array = originalDefaultVisualizersCallback(
+    const entities = dataSource.entities;
+    const array = originalDefaultVisualizersCallback(
       scene,
       entityCluster,
       dataSource

@@ -54,9 +54,9 @@ export var CustomSensorVolume = function (this: any, options?) {
   this._pickId = undefined;
   this._pickPrimitive = defaultValue(options._pickPrimitive, this);
 
-  this._frontFaceColorCommand = new DrawCommand();
-  this._backFaceColorCommand = new DrawCommand();
-  this._pickCommand = new DrawCommand();
+  this._frontFaceColorCommand = new DrawCommand({} as any);
+  this._backFaceColorCommand = new DrawCommand({} as any);
+  this._pickCommand = new DrawCommand({} as any);
 
   this._boundingSphere = new BoundingSphere();
   this._boundingSphereWC = new BoundingSphere();

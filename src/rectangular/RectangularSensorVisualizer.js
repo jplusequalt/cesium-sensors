@@ -1,42 +1,28 @@
-import {
-  Property as _Property,
-  AssociativeArray,
-  Cartesian3,
-  Color,
-  defined,
-  destroyObject,
-  DeveloperError,
-  EntityCollection,
-  MaterialProperty,
-  Matrix3,
-  Matrix4,
-  PropertyExtended,
-  Quaternion,
-  Scene,
-} from 'cesium';
-
-import { Entity, JulianDate, Transforms } from 'cesium';
+import Cesium from 'cesium';
+import { RectangularSensorPrimitive } from './RectangularSensorPrimitive';
 import { removePrimitive } from '../util/remove-primitive';
-import { RectangularPyramidSensorVolume } from './rectangular-pyramid-sensor-volume';
 
-const Property: PropertyExtended = _Property as unknown as PropertyExtended;
+var AssociativeArray = Cesium.AssociativeArray;
+var Cartesian3 = Cesium.Cartesian3;
+var Color = Cesium.Color;
+var defined = Cesium.defined;
+var destroyObject = Cesium.destroyObject;
+var DeveloperError = Cesium.DeveloperError;
+var Matrix3 = Cesium.Matrix3;
+var Matrix4 = Cesium.Matrix4;
+var Quaternion = Cesium.Quaternion;
+var MaterialProperty = Cesium.MaterialProperty;
+var Property = Cesium.Property;
 
-let matrix3Scratch = new Matrix3();
-let cachedPosition = new Cartesian3();
-let cachedGazePosition = new Cartesian3();
-let cachedOrientation = new Quaternion();
-let diffVectorScratch = new Cartesian3();
-let orientationScratch = new Quaternion();
+var matrix3Scratch = new Matrix3();
+var matrix4Scratch = new Matrix4();
+var cachedPosition = new Cartesian3();
+var cachedGazePosition = new Cartesian3();
+var cachedOrientation = new Quaternion();
+var diffVectorScratch = new Cartesian3();
+var orientationScratch = new Quaternion();
 
-/**
- * A {@link Visualizer} which maps {@link Entity#rectangularSensor} to a {@link RectangularSensor}.
- * @alias RectangularSensorVisualizer
- * @constructor
- *
- * @param {Scene} scene The scene the primitives will be rendered in.
- * @param {EntityCollection} entityCollection The entityCollection to visualize.
- */
-export var RectangularSensorVisualizer = function (this: any, scene: Scene, entityCollection: EntityCollection) {
+var RectangularSensorVisualizer = function (scene, entityCollection) {
   // >>includeStart('debug', pragmas.debug);
   if (!defined(scene)) {
     throw new DeveloperError('scene is required.');
@@ -67,28 +53,28 @@ export var RectangularSensorVisualizer = function (this: any, scene: Scene, enti
  * @param {JulianDate} time The time to update to.
  * @returns {Boolean} This function always returns true.
  */
-RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
+RectangularSensorVisualizer.prototype.update = function (time) {
   // >>includeStart('debug', pragmas.debug);
   if (!defined(time)) {
     throw new DeveloperError('time is required.');
   }
   // >>includeEnd('debug');
 
-  const entities = this._entitiesToVisualize.values;
-  const hash = this._hash;
-  const primitives = this._primitives;
+  var entities = this._entitiesToVisualize.values;
+  var hash = this._hash;
+  var primitives = this._primitives;
 
-  for (let i = 0, len = entities.length; i < len; i++) {
-    const entity = entities[i];
-    const rectangularSensorGraphics = entity._rectangularSensor;
+  for (var i = 0, len = entities.length; i < len; i++) {
+    var entity = entities[i];
+    var rectangularSensorGraphics = entity._rectangularSensor;
 
-    let position;
-    let orientation;
-    let radius;
-    let xHalfAngle;
-    let yHalfAngle;
-    let data = hash[entity.id];
-    let show =
+    var position;
+    var orientation;
+    var radius;
+    var xHalfAngle;
+    var yHalfAngle;
+    var data = hash[entity.id];
+    var show =
       entity.isShowing &&
       entity.isAvailable(time) &&
       Property.getValueOrDefault(rectangularSensorGraphics._show, time, true);
@@ -127,9 +113,9 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
       continue;
     }
 
-    let primitive = defined(data) ? data.primitive : undefined;
+    var primitive = defined(data) ? data.primitive : undefined;
     if (!defined(primitive)) {
-      primitive = new RectangularPyramidSensorVolume();
+      primitive = new RectangularSensorPrimitive();
       primitive.id = entity;
       primitives.add(primitive);
 
@@ -141,12 +127,12 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
       hash[entity.id] = data;
     }
 
-    const gaze = Property.getValueOrUndefined(
+    var gaze = Property.getValueOrUndefined(
       rectangularSensorGraphics._gaze,
       time
     );
     if (defined(gaze)) {
-      const targetPosition = Property.getValueOrUndefined(
+      var targetPosition = Property.getValueOrUndefined(
         gaze._position,
         time,
         cachedGazePosition
@@ -156,18 +142,21 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
         continue;
       }
 
-      const diffVector = Cartesian3.subtract(
+      var diffVector = Cartesian3.subtract(
         position,
         targetPosition,
         diffVectorScratch
       );
-      const rotate = Cartesian3.angleBetween(Cartesian3.UNIT_Z, diffVector);
-      const cross = Cartesian3.cross(
-        Cartesian3.UNIT_Z,
+      var rotate = Cartesian3.angleBetween(
+        Cesium.Cartesian3.UNIT_Z,
+        diffVector
+      );
+      var cross = Cartesian3.cross(
+        Cesium.Cartesian3.UNIT_Z,
         diffVector,
         diffVectorScratch
       );
-      const orientation = Quaternion.fromAxisAngle(
+      var orientation = Quaternion.fromAxisAngle(
         cross,
         rotate - Math.PI,
         orientationScratch
@@ -194,7 +183,8 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
           data.position = Cartesian3.clone(position, data.position);
           data.orientation = Quaternion.clone(orientation, data.orientation);
         } else {
-          primitive.modelMatrix = Transforms.eastNorthUpToFixedFrame(position);
+          primitive.modelMatrix =
+            Cesium.Transforms.eastNorthUpToFixedFrame(position);
           data.position = Cartesian3.clone(position, data.position);
         }
       }
@@ -225,20 +215,10 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
       time,
       true
     );
-    // primitive.material = (MaterialProperty as any).getValue(
-    //   time,
-    //   rectangularSensorGraphics._material,
-    //   primitive.material
-    // );
-    primitive.lateralSurfaceMaterial = (MaterialProperty as any).getValue(
+    primitive.material = MaterialProperty.getValue(
       time,
-      rectangularSensorGraphics._lateralSurfaceMaterial,
-      primitive.lateralSurfaceMaterial
-    );
-    primitive.domeSurfaceMaterial = (MaterialProperty as any).getValue(
-      time,
-      rectangularSensorGraphics._domeSurfaceMaterial,
-      primitive.domeSurfaceMaterial
+      rectangularSensorGraphics._material,
+      primitive.material
     );
     primitive.showDomeSurfaces = Property.getValueOrDefault(
       rectangularSensorGraphics._showDomeSurfaces,
@@ -272,8 +252,7 @@ RectangularSensorVisualizer.prototype.update = function (time: JulianDate) {
     );
     primitive.scanPlaneMode = Property.getValueOrDefault(
       rectangularSensorGraphics._scanPlaneMode,
-      time,
-      JulianDate.now()
+      time
     );
     primitive.scanPlaneColor = Property.getValueOrDefault(
       rectangularSensorGraphics._scanPlaneColor,
@@ -307,10 +286,10 @@ RectangularSensorVisualizer.prototype.isDestroyed = function () {
  * Removes and destroys all primitives created by this instance.
  */
 RectangularSensorVisualizer.prototype.destroy = function () {
-  const entities = this._entitiesToVisualize.values;
-  const hash = this._hash;
-  const primitives = this._primitives;
-  for (let i = entities.length - 1; i > -1; i--) {
+  var entities = this._entitiesToVisualize.values;
+  var hash = this._hash;
+  var primitives = this._primitives;
+  for (var i = entities.length - 1; i > -1; i--) {
     removePrimitive(entities[i], hash, primitives);
   }
   return destroyObject(this);
@@ -320,24 +299,25 @@ RectangularSensorVisualizer.prototype.destroy = function () {
  * @private
  */
 RectangularSensorVisualizer.prototype._onCollectionChanged = function (
-  entityCollection: EntityCollection,
-  added: Entity[],
-  removed: Entity[],
-  changed: Entity[]
+  entityCollection,
+  added,
+  removed,
+  changed
 ) {
-  let entity;
-  const entities = this._entitiesToVisualize;
-  const hash = this._hash;
-  const primitives = this._primitives;
+  var i;
+  var entity;
+  var entities = this._entitiesToVisualize;
+  var hash = this._hash;
+  var primitives = this._primitives;
 
-  for (let i = added.length - 1; i > -1; i--) {
+  for (i = added.length - 1; i > -1; i--) {
     entity = added[i];
     if (defined(entity._rectangularSensor) && defined(entity._position)) {
       entities.set(entity.id, entity);
     }
   }
 
-  for (let i = changed.length - 1; i > -1; i--) {
+  for (i = changed.length - 1; i > -1; i--) {
     entity = changed[i];
     if (defined(entity._rectangularSensor) && defined(entity._position)) {
       entities.set(entity.id, entity);
@@ -347,9 +327,11 @@ RectangularSensorVisualizer.prototype._onCollectionChanged = function (
     }
   }
 
-  for (let i = removed.length - 1; i > -1; i--) {
+  for (i = removed.length - 1; i > -1; i--) {
     entity = removed[i];
     removePrimitive(entity, hash, primitives);
     entities.remove(entity.id);
   }
 };
+
+export { RectangularSensorVisualizer };
